@@ -8,7 +8,18 @@ $bot = new \LINE\LINEBot($httpClient, ['channelSecret' => getenv('CHANNEL_SECRET
 
 $signature = $_SERVER['HTTP_' . \LINE\LINEBot\Constant\HTTPHeader::LINE_SIGNATURE];
 
-$events = $bot->parseEventRequest(file_get_contents('php://input'), $signature);
+try {
+  $events = $bot->parseEventRequest(file_get_contents('php://input'), $signature);
+} catch (\LINE\LINEBot\Exception\InvalidSignatureException $e) {
+  error_log('ParseEventRequest failed. InvalidSignatureException => '. var_export($e, TRUE));
+} catch (\LINE\LINEBot\Exception\UnknownEventTypeException $e) {
+  error_log('ParseEventRequest failed. UnknownEventTypeException => '. var_export($e, TRUE));
+} catch (\LINE\LINEBot\Exception\UnknownMessageTypeException $e) {
+  error_log('ParseEventRequest failed. UnknownMessageTypeException => '. var_export($e, TRUE));
+} catch (\LINE\LINEBot\Exception\InvalidEventRequestException $e) {
+  error_log('ParseEventRequest failed. InvalidEventRequestException => '. var_export($e, TRUE));
+}
+
 
 foreach ($events as $event) {
   if (!($event instanceof \LINE\LINEBot\Event\MessageEvent)) {
