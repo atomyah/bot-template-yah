@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ .'/vendor/autoload.php';
+require 'functions.php';
 
 $httpClient = new \LINE\LINEBot\HTTPClient\CurlHTTPClient(getenv('CHANNEL_ACCESS_TOKEN'));
 
@@ -15,12 +16,4 @@ foreach ($events as $event) {
 }
 
 
-function replyTextMessage($bot, $replyToken, $text) {
-  $response = $bot->replyMessage($replyToken, new \LINE\LINEBot\MessageBuilder\TextMessageBuilder($text));
-
-  if (!$response->isSucceeded()) {
-    error_log('Failed!' . $response->getHTTPStatus . ' ' . $response->getRawBody());
-  }
-  
-}
 ?>
