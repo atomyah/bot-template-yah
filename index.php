@@ -11,7 +11,7 @@ $events = $bot->parseEventRequest(file_get_contents('php://input'), $signature);
 
 foreach ($events as $event) {
   $bot->replyText($event->getReplyToken(), $event->getText());
-  
+  replyTextMessage($bot, $event->getReplyToken(), $event->getText());
 }
 
 
